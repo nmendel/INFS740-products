@@ -13,11 +13,17 @@
   <small>
     <em class="text-muted">
       Posted on
-      <span ng-bind="vm.product.created | date:'mediumDate'"></span>
+      <span ng-bind="vm.product.date | date:'mediumDate'"></span>
       by
       <span ng-if="vm.product.user" ng-bind="vm.product.user.displayName"></span>
       <span ng-if="!vm.product.user">Deleted User</span>
     </em>
   </small>
-  <p class="lead" ng-bind="vm.product.content"></p>
+  <p class="lead" ng-bind="vm.product.name"></p>
+  <p>
+    Weight Threshold: <span ng-bind="vm.product.threshold"></span> lbs.
+  </p>
+  <p>
+    Device: <span ng-bind="vm.product.DeviceID"></span>
+  </p>
 </section>

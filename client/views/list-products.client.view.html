@@ -1,21 +1,26 @@
 <section>
   <div class="page-header">
-    <h1>Products</h1>
+    <h1>Product Registrations</h1>
   </div>
   <div class="list-group">
     <a ng-repeat="product in vm.products" ui-sref="products.view({ productId: product._id })" class="list-group-item">
       <small class="list-group-item-text">
-        Posted on
-        <span ng-bind="product.created | date:'mediumDate'"></span>
+        Registered on
+        <span ng-bind="product.date | date:'mediumDate'"></span>
         by
         <span ng-if="product.user" ng-bind="product.user.displayName"></span>
         <span ng-if="!product.user">Deleted User</span>
       </small>
-      <h4 class="list-group-item-heading" ng-bind="product.title"></h4>
-      <p class="list-group-item-text" ng-bind="product.content"></p>
+      <h4 class="list-group-item-heading" ng-bind="product.name"></h4>
+      <p class="list-group-item-text">
+	Weight Threshold: <span ng-bind="product.threshold"></span> lbs.
+      </p>
+      <p class="list-group-item-text">
+	Device: <span ng-bind="product.DeviceID"></span>
+      </p>
     </a>
   </div>
   <div class="alert alert-warning text-center" ng-if="vm.products.$resolved && !vm.products.length">
-    No products yet, why don't you <a ui-sref="products.create">create one</a>?
+    No registrations yet, why don't you <a ui-sref="products.create">create one</a>?
   </div>
 </section>

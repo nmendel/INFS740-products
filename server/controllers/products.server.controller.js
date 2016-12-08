@@ -13,7 +13,14 @@ var path = require('path'),
  */
 exports.create = function (req, res) {
   var product = new Product(req.body);
+
   product.user = req.user;
+
+
+  if (!product.name) {
+    product.name = 'Toilet Paper';
+  }
+  console.log(product);
 
   product.save(function (err) {
     if (err) {
@@ -46,8 +53,8 @@ exports.read = function (req, res) {
 exports.update = function (req, res) {
   var product = req.product;
 
-  product.title = req.body.title;
-  product.content = req.body.content;
+  product.name = req.body.name;
+  product.weight = req.body.weight;
 
   product.save(function (err) {
     if (err) {
@@ -81,7 +88,7 @@ exports.delete = function (req, res) {
  * List of Products
  */
 exports.list = function (req, res) {
-  Product.find().sort('-created').populate('user', 'displayName').exec(function (err, products) {
+  Product.find().sort('-date').populate('user', 'displayName').exec(function (err, products) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)

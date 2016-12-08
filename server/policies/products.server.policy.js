@@ -20,24 +20,42 @@ exports.invokeRolesPolicies = function () {
     }, {
       resources: '/api/products/:productId',
       permissions: '*'
+    }, {
+      resources: '/api/reading',
+      permissions: '*'
+    }, {
+      resources: '/api/reading/:readingId',
+      permissions: '*'
     }]
   }, {
     roles: ['user'],
     allows: [{
       resources: '/api/products',
-      permissions: ['get', 'post']
+      permissions: '*' // ['get', 'post']
     }, {
       resources: '/api/products/:productId',
-      permissions: ['get']
+      permissions: '*' // ['get']
+    }, {
+      resources: '/api/reading',
+      permissions: '*' // ['get', 'post']
+    }, {
+      resources: '/api/reading/:readingId',
+      permissions: '*' // ['get']
     }]
   }, {
     roles: ['guest'],
     allows: [{
       resources: '/api/products',
-      permissions: ['get']
+      permissions: '*' // ['get', 'post']
     }, {
       resources: '/api/products/:productId',
-      permissions: ['get']
+      permissions: '*' // ['get']
+    }, {
+      resources: '/api/reading',
+      permissions: '*' // ['get', 'post']
+    }, {
+      resources: '/api/reading/:readingId',
+      permissions: '*' // ['get']
     }]
   }]);
 };

@@ -4,7 +4,8 @@
  * Module dependencies
  */
 var productsPolicy = require('../policies/products.server.policy'),
-  products = require('../controllers/products.server.controller');
+  products = require('../controllers/products.server.controller'),
+  reading = require('../controllers/reading.server.controller');
 
 module.exports = function (app) {
   // Products collection routes
@@ -20,4 +21,18 @@ module.exports = function (app) {
 
   // Finish by binding the product middleware
   app.param('productId', products.productByID);
+
+  // Reading collection routes
+  app.route('/api/reading').all(productsPolicy.isAllowed)
+    .get(reading.list)
+    .post(reading.create);
+
+  // Single reading routes
+  app.route('/api/reading/:readingId').all(productsPolicy.isAllowed)
+    .get(reading.read)
+    .put(reading.update)
+    .delete(reading.delete);
+
+  // Finish by binding the reading middleware
+  app.param('readingId', reading.readingByID);
 };

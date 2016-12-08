@@ -16,6 +16,7 @@
     vm.form = {};
     vm.remove = remove;
     vm.save = save;
+    $scope.devices = [1, 2, 3];
 
     // Remove existing Product
     function remove() {
