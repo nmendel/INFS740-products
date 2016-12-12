@@ -17,6 +17,7 @@
     vm.remove = remove;
     vm.save = save;
     $scope.devices = [1, 2, 3];
+    $scope.alert_type = ['Amazon Order', 'Email'];
 
     // Remove existing Product
     function remove() {

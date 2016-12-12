@@ -28,7 +28,9 @@ exports.create = function (req, res) {
   var latestRegistration = null;
 
   // TODO: make it work if theres no registration
-  Product.find().sort('-date').populate('user', 'displayName').exec(function (err, products) {
+  Product.find().sort('-date')
+  .populate('user', 'displayName').populate('user', 'email')
+  .exec(function (err, products) {
     if (err) {
       // failed to find registered devices
       return res.status(400).send({
@@ -42,23 +44,20 @@ exports.create = function (req, res) {
         }
       }
 
-      console.log('latest reg ->');
-      console.log(latestRegistration);
-
       if (latestRegistration !== null && latestRegistration.threshold <= reading.Weight) {
         reading.alert = true;
       }
 
       console.log('Alert? -> ' + reading.alert);
       if (reading.alert) {
+
         // setup e-mail data with unicode symbols
         var mailOptions = {
           from: '"BuyBot" <nmendel3030@yahoo.com>',
-//          from: 'nmendel3030@yahoo.com',
-          to: 'nick.mendel@gmail.com',
-          subject: 'Hello',
-          text: 'Hello world',
-          html: '<b>Hello world</b>'
+          to: latestRegistration.user.email,
+          subject: '[BuyBot] Time to buy ' + latestRegistration.name,
+          text: 'Hello, it is time to purchase more ' + latestRegistration.name,
+          html: '<b>Hello, it is time to purchase more ' + latestRegistration.name + '</b>'
         };
 
         // send mail with defined transport object

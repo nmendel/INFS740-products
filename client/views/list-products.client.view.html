@@ -18,6 +18,9 @@
       <p class="list-group-item-text">
 	Device: <span ng-bind="product.DeviceID"></span>
       </p>
+      <p class="list-group-item-text">
+	Alert Type: <span ng-bind="product.alert_type"></span>
+      </p>
     </a>
   </div>
   <div class="alert alert-warning text-center" ng-if="vm.products.$resolved && !vm.products.length">

@@ -33,6 +33,11 @@ var ProductSchema = new Schema({
     type: String,
     default: '',
     trim: true
+  },
+  alert_type: {
+    type: String,
+    default: 'Email',
+    trim: true
   }
 
 });

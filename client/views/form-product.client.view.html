@@ -21,7 +21,11 @@
         </div>
         <div class="form-group">
           <label class="control-label" for="DeviceID">Device ID</label>
-          <select name="DeviceID" ng-model="vm.product.DeviceID" ng-options="x for x in devices" id="DeviceID" class="form-control"></select>
+          <select name="DeviceID" ng-init="vm.product.DeviceID = devices[0]" ng-model="vm.product.DeviceID" ng-options="x for x in devices" id="DeviceID" class="form-control"></select>
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="alert_type">Alert Type</label>
+          <select name="DeviceID" ng-init="vm.product.alert_type = alert_type[0]" ng-model="vm.product.alert_type" ng-options="x for x in alert_type" id="alert_type" class="form-control"></select>
         </div>
         <div class="form-group">
           <button type="submit" class="btn btn-default">{{vm.product._id ? 'Update' : 'Create'}}</button>
