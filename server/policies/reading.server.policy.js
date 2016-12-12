@@ -8,35 +8,32 @@ var acl = require('acl');
 // Using the memory backend
 acl = new acl(new acl.memoryBackend());
 
-/**
- * Invoke Products Permissions
- */
 exports.invokeRolesPolicies = function () {
   acl.allow([{
     roles: ['admin'],
     allows: [{
-      resources: '/api/products',
+      resources: '/api/reading',
       permissions: '*'
     }, {
-      resources: '/api/products/:productId',
+      resources: '/api/reading/:readingId',
       permissions: '*'
     }]
   }, {
     roles: ['user'],
     allows: [{
-      resources: '/api/products',
+      resources: '/api/reading',
       permissions: '*' // ['get', 'post']
     }, {
-      resources: '/api/products/:productId',
+      resources: '/api/reading/:readingId',
       permissions: '*' // ['get']
     }]
   }, {
     roles: ['guest'],
     allows: [{
-      resources: '/api/products',
+      resources: '/api/reading',
       permissions: '*' // ['get', 'post']
     }, {
-      resources: '/api/products/:productId',
+      resources: '/api/reading/:readingId',
       permissions: '*' // ['get']
     }]
   }]);

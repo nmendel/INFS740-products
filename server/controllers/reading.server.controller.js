@@ -4,10 +4,20 @@
  * Module dependencies
  */
 var path = require('path'),
+  nodemailer = require('nodemailer'),
+  smtpTransport = require('nodemailer-smtp-transport'),
   mongoose = require('mongoose'),
   Reading = mongoose.model('Reading'),
-  errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
-
+  Product = mongoose.model('Product'),
+  errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
+  transporter = nodemailer.createTransport(smtpTransport({
+    host: 'smtp.mail.yahoo.com',
+    port: 465,
+    auth: {
+      user: 'nmendel3030@yahoo.com',
+      pass: 'jump1jump1'
+    }
+  }));
 
 /**
  * Create an reading
@@ -15,36 +25,67 @@ var path = require('path'),
 exports.create = function (req, res) {
   var reading = new Reading(req.body);
 
-  console.log(req.user);
-  console.log(typeof req.user === 'undefined');
-  reading.user = req.user;
+  var latestRegistration = null;
 
-  // TODO: add user and name
-  // TODO: user is a db object
-  console.log('log!');
-  console.log(reading);
-  if (typeof req.user === 'undefined' || !reading.user) {
-    reading.user = 'Nick';
-  }
-  console.log(req.user);
-  console.log(typeof req.user === 'undefined');
-
-
-  if (!reading.name) {
-    reading.name = 'Toilet Paper';
-  }
-  console.log('log2!');
-  console.log(reading);
-
-  reading.save(function (err) {
+  // TODO: make it work if theres no registration
+  Product.find().sort('-date').populate('user', 'displayName').exec(function (err, products) {
     if (err) {
+      // failed to find registered devices
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.json(reading);
+      for (var i = 0; i < products.length; i++) {
+        if (products[i].DeviceID === reading.DeviceID) {
+          latestRegistration = products[i];
+          break;
+        }
+      }
+
+      console.log('latest reg ->');
+      console.log(latestRegistration);
+
+      if (latestRegistration !== null && latestRegistration.threshold <= reading.Weight) {
+        reading.alert = true;
+      }
+
+      console.log('Alert? -> ' + reading.alert);
+      if (reading.alert) {
+        // setup e-mail data with unicode symbols
+        var mailOptions = {
+          from: '"BuyBot" <nmendel3030@yahoo.com>',
+//          from: 'nmendel3030@yahoo.com',
+          to: 'nick.mendel@gmail.com',
+          subject: 'Hello',
+          text: 'Hello world',
+          html: '<b>Hello world</b>'
+        };
+
+        // send mail with defined transport object
+        transporter.sendMail(mailOptions, function(error, info) {
+          if (error) {
+            transporter.close();
+            return console.log(error);
+          }
+
+          console.log('Message sent: ' + info.response);
+          transporter.close();
+        });
+      }
+
+      reading.save(function (err) {
+        if (err) {
+          return res.status(400).send({
+            message: errorHandler.getErrorMessage(err)
+          });
+        } else {
+          res.json(reading);
+        }
+      });
     }
   });
+
+
 };
 
 /**
