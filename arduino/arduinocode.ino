@@ -12,10 +12,10 @@ WiFiClient espClient;
 PubSubClient client(espClient);
 
 #define the_mqtt_server "104.236.210.175"
-#define the_mqtt_user "mm"
+#define the_mqtt_user ""
 #define the_mqtt_password ""
-#define the_topic1 "infs2"
-#define mqtt_client_name "devclass" //this needs to be unique for each unit
+#define the_topic1 "infs740_test"
+#define mqtt_client_name "devclaasdads2ss" //this needs to be unique for each unit
 
 #define device_id "***BuyBot config***"
 
@@ -43,7 +43,7 @@ void setup() {
   pinMode(4, OUTPUT); //RED
   Serial.begin(115200);
 
-  digitalWrite(4, HIGH);   // turn the LED on (RED is the voltage level)
+  digitalWrite(12, HIGH);   // turn the LED on (RED is the voltage level)
     //client.setServer(the_mqtt_server, 1883);
     //pinMode(inputPin, INPUT);     // declare sensor as input
   Serial.println();
@@ -106,7 +106,7 @@ void setup() {
   wifiManager.setSaveConfigCallback(saveConfigCallback);
 
   //set static ip
-  wifiManager.setSTAStaticIPConfig(IPAddress(192,168,0,99), IPAddress(192,168,0,1), IPAddress(255,255,255,0));
+  wifiManager.setSTAStaticIPConfig(IPAddress(192,168,1,99), IPAddress(192,168,1,1), IPAddress(255,255,255,0));
   
   //add all your parameters here
   //wifiManager.addParameter(&custom_mqtt_server);
@@ -134,13 +134,13 @@ void setup() {
   
   if (!wifiManager.autoConnect(device_id, "password")) {
     Serial.println("failed to connect and hit timeout");
-      digitalWrite(4, HIGH);
+      digitalWrite(12, HIGH);
       delay(200);
-      digitalWrite(4, LOW);
+      digitalWrite(12, LOW);
       delay(200);
-      digitalWrite(4, HIGH);
+      digitalWrite(12, HIGH);
       delay(200);
-      digitalWrite(4, LOW);
+      digitalWrite(12, LOW);
       delay(200);
     
     delay(3000);
@@ -183,19 +183,19 @@ void setup() {
   //Serial.println(mqtt_server);
 
   //Serial.println(custom_mqtt_port);
-  digitalWrite(4, LOW);    // turn the LED off by making the voltage LOW
+  digitalWrite(12, LOW);    // turn the LED off by making the voltage LOW
   delay(300);
-  digitalWrite(12, HIGH);
+  digitalWrite(4, HIGH);
   delay(300);
-    digitalWrite(12, LOW);
+    digitalWrite(4, LOW);
     delay(300);
-      digitalWrite(12, HIGH);
+      digitalWrite(4, HIGH);
   delay(300);
-    digitalWrite(12, LOW);
+    digitalWrite(4, LOW);
     delay(300);
-      digitalWrite(12, HIGH);
+      digitalWrite(4, HIGH);
   delay(300);
-    digitalWrite(12, LOW);
+    digitalWrite(4, LOW);
     delay(300);
   
 }
@@ -221,13 +221,13 @@ void reconnect() {
 
             //flash green light to say that we are connected again
             
-                digitalWrite(12, HIGH);
+                digitalWrite(4, HIGH);
                 delay(200);
-                digitalWrite(12, LOW);
+                digitalWrite(4, LOW);
                 delay(200);
-                digitalWrite(12, HIGH);
+                digitalWrite(4, HIGH);
                 delay(200);
-                digitalWrite(12, LOW);
+                digitalWrite(4, LOW);
                 delay(200);
                 
         } else {
@@ -236,13 +236,13 @@ void reconnect() {
             Serial.println(" try again in 5 seconds");
             // Wait 5 seconds before retrying
             delay(5000);
-                digitalWrite(4, HIGH);
+                digitalWrite(12, HIGH);
                 delay(200);
-                digitalWrite(4, LOW);
+                digitalWrite(12, LOW);
                 delay(200);
-                digitalWrite(4, HIGH);
+                digitalWrite(12, HIGH);
                 delay(200);
-                digitalWrite(4, LOW);
+                digitalWrite(12, LOW);
                 delay(200);
         }
     }
@@ -250,7 +250,9 @@ void reconnect() {
 
 void loop() {
 client.setServer(the_mqtt_server, 1883);
+PubSubClient client(espClient);
   if (!client.connected()) {
+    PubSubClient client(espClient);
  reconnect();
 }
 
@@ -263,26 +265,49 @@ client.setServer(the_mqtt_server, 1883);
   Serial.println("user name");
   Serial.println(the_mqtt_server);
 
-
-  String message_to_send = String("{\"DeviceID\":\"") +  String(device_id) + "\", \"Current_Weight\":\"" + String(weight_measure) + "\"}";
+  int weight_measure = 12;
+  String message_to_send = String("{\"DeviceID\":\"") +  String("1") + "\", \"Weight\":\"" + String(weight_measure) + "\"}";
 
   //String message_to_send = String("{") + String("\"DeviceInfo\"") + String(":[{\"DeviceID\":\"") +  String(device_id) + "\", \"Current_Weight\":\"" + String(weight_measure) + "\"}]}";
   //String message_to_send = String(mqtt_server) + " " + String(mqtt_port);
   Serial.println(message_to_send);
 
   
-  digitalWrite(12, HIGH);
+  digitalWrite(4, HIGH);
   delay(300);
-   digitalWrite(12, LOW);
+   digitalWrite(4, LOW);
   delay(300);
   //pubMQTT("1_purchase",message_to_send);
     //pubMQTT("1_purchase",mqtt_server);
-  //pubMQTT("infs740",message_to_send);
+  pubMQTT("infs740_test",message_to_send);
   delay(5000);
    client.loop();
-    digitalWrite(12, HIGH);
+    digitalWrite(4, HIGH);
     delay(300);
-    digitalWrite(12, LOW);
+    digitalWrite(4, LOW);
    delay(1000);  
 
+delay(20000);
+
+//int weight_measure = 11;
+  String message_to_send1 = String("{\"DeviceID\":\"") +  String("1") + "\", \"Weight\":\"" + String("11") + "\"}";
+
+  //String message_to _send = String("{") + String("\"DeviceInfo\"") + String(":[{\"DeviceID\":\"") +  String(device_id) + "\", \"Current_Weight\":\"" + String(weight_measure) + "\"}]}";
+  //String message_to_send = String(mqtt_server) + " " + String(mqtt_port);
+  Serial.println(message_to_send1);
+
+  
+  digitalWrite(4, HIGH);
+  delay(300);
+   digitalWrite(4, LOW);
+  delay(300);
+  //pubMQTT("1_purchase",message_to_send);
+    //pubMQTT("1_purchase",mqtt_server);
+  pubMQTT("infs740_test",message_to_send1);
+  delay(5000);
+   client.loop();
+    digitalWrite(4, HIGH);
+    delay(300);
+    digitalWrite(4, LOW);
+   delay(100000000);  
 }
