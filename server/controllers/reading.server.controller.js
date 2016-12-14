@@ -44,7 +44,10 @@ exports.create = function (req, res) {
         }
       }
 
-      if (latestReg !== null && latestReg.threshold <= reading.Weight) {
+      console.log(latestReg);
+      console.log(latestReg.threshold);
+      console.log(reading.Weight);
+      if (latestReg !== null && latestReg.threshold >= reading.Weight) {
         reading.alert = true;
       }
 
