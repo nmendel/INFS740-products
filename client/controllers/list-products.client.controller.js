@@ -12,23 +12,21 @@
 
     var products = ProductsService.query();
 
-    // TODO: finish
-/*
-    var prods = {};
+    products.$promise.then(function (response) {
+      var prods = {};
 
-    console.log(products);
+      for (var i = 0; i < products.length; i++) {
+        var product = products[i];
+        var DeviceID = product.DeviceID;
+        if (!(DeviceID in prods)) {
+          prods[DeviceID] = product;
+        }
+      }
 
-    for (var i = 0; i < products[0].length; i++) {
-      console.log(products[0][i]);
-      var DeviceID = products[0][i].DeviceID;
-      prods[DeviceID] = products[0][i];
-    }
+      console.log('prods: ');
+      console.log(prods);
 
-    console.log('prods: ');
-    console.log(prods);
-
-    vm.products = Object.values(prods);
-*/
-    vm.products = products;
+      vm.products = Object.values(prods);
+    });
   }
 }());

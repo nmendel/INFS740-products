@@ -2,6 +2,10 @@
   <div class="page-header">
     <h1>{{vm.product._id ? 'Edit Product' : 'New Product'}}</h1>
   </div>
+
+<p>Please register a product you would like to measure and tag it to your respective device.</p>
+<p>Please remember to set your threshold amount to let BuyBot know when to place an order</p>
+
   <div class="col-md-12">
     <form name="vm.form.productForm" class="form-horizontal" ng-submit="vm.save(vm.form.productForm.$valid)" novalidate>
       <fieldset>

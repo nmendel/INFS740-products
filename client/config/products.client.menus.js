@@ -27,5 +27,10 @@
       state: 'products.create',
       roles: ['user']
     });
+
+    menuService.addSubMenuItem('topbar', 'products', {
+      title: 'Histogram',
+      state: 'reading.list'
+    });
   }
 }());

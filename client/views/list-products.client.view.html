@@ -1,6 +1,15 @@
 <section>
   <div class="page-header">
     <h1>Product Registrations</h1>
+	<p>
+	Below shows the various product registrations,who they belong to and what their respective thresholds are.
+	</p>
+
+	<p>
+	If a device's current weight falls below the threshold, an email will be sent out to its respective customer
+	</p>
+
+
   </div>
   <div class="list-group">
     <a ng-repeat="product in vm.products" ui-sref="products.view({ productId: product._id })" class="list-group-item">
@@ -21,6 +30,7 @@
       <p class="list-group-item-text">
 	Alert Type: <span ng-bind="product.alert_type"></span>
       </p>
+
     </a>
   </div>
   <div class="alert alert-warning text-center" ng-if="vm.products.$resolved && !vm.products.length">

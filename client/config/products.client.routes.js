@@ -61,6 +61,24 @@
           pageTitle: 'Product {{ productResolve.title }}'
         }
       });
+
+
+    $stateProvider
+      .state('reading', {
+        abstract: true,
+        url: '/reading',
+        template: '<ui-view/>'
+      })
+      .state('reading.list', {
+        url: '',
+        templateUrl: 'modules/products/client/views/list-reading.client.view.html',
+        controller: 'ReadingListController',
+        controllerAs: 'vm',
+        data: {
+          pageTitle: 'Histogram'
+        }
+      });
+
   }
 
   getProduct.$inject = ['$stateParams', 'ProductsService'];

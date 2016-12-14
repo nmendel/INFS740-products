@@ -25,7 +25,7 @@ var path = require('path'),
 exports.create = function (req, res) {
   var reading = new Reading(req.body);
 
-  var latestRegistration = null;
+  var latestReg = null;
 
   // TODO: make it work if theres no registration
   Product.find().sort('-date')
@@ -39,12 +39,12 @@ exports.create = function (req, res) {
     } else {
       for (var i = 0; i < products.length; i++) {
         if (products[i].DeviceID === reading.DeviceID) {
-          latestRegistration = products[i];
+          latestReg = products[i];
           break;
         }
       }
 
-      if (latestRegistration !== null && latestRegistration.threshold <= reading.Weight) {
+      if (latestReg !== null && latestReg.threshold <= reading.Weight) {
         reading.alert = true;
       }
 
@@ -54,11 +54,16 @@ exports.create = function (req, res) {
         // setup e-mail data with unicode symbols
         var mailOptions = {
           from: '"BuyBot" <nmendel3030@yahoo.com>',
-          to: latestRegistration.user.email,
-          subject: '[BuyBot] Time to buy ' + latestRegistration.name,
-          text: 'Hello, it is time to purchase more ' + latestRegistration.name,
-          html: '<b>Hello, it is time to purchase more ' + latestRegistration.name + '</b>'
+          to: latestReg.user.email,
+          subject: '[BuyBot] Time to buy ' + latestReg.name,
+          text: 'Hello, it is time to purchase more ' + latestReg.name,
+          html: '<b>Hello, it is time to purchase more ' + latestReg.name + '</b>'
         };
+
+        if (latestReg.alert_type === 'Amazon Order') {
+          mailOptions.text = 'Failed to order ' + latestReg.name + ' from Amazon. It is time to purchase more.';
+          mailOptions.html = '<b>Failed to order ' + latestReg.name + ' from Amazon. It is time to purchase more.</b>';
+        }
 
         // send mail with defined transport object
         transporter.sendMail(mailOptions, function(error, info) {
